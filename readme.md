@@ -1,8 +1,5 @@
 # Rails Models and Migrations
 
-## To Do
-* Incorporate errors that would've been introduced in the old MVC class.
-
 ## Learning Objectives
 
 * Create a new rails application with postgres as the default.
@@ -18,11 +15,13 @@
 
 ---
 
+## Framing
+
 The files we’ll be working with in this lesson are highlighted in blue below:
 
 ![](https://dl.dropboxusercontent.com/s/2zho5ekuhxpp5lx/Screenshot%202015-07-26%2010.26.28.png?dl=0)
 
-## We Do: Set Up a Rails Application
+## We Do: Set Up a Rails Application (10 minutes / 0:10)
 
 Run the below command in Terminal to create a new Rails application...  
 
@@ -43,7 +42,7 @@ $ git commit -m "initial commit"
 
 Let's explore some of the files that were created...  
 
-## `tunr/config/database.yml`
+### `tunr/config/database.yml`
 
 Specifies the database connection options. By default, rails uses the development options detailed in this file.  
 
@@ -60,7 +59,7 @@ ENV["RAILS_ENV"]
 ```
 > You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` and `production`  
 
-## What is Rake?
+#### What is Rake?
 
 **Rake** is a ruby implementation of Make. **Make** is a popular tool that allows developers to put repetitive command line tasks into a single file and run several tasks at the same time
 with a single command.  
@@ -73,27 +72,33 @@ Rails uses rake to...
 
 [Learn more about Rake here](https://github.com/ruby/rake#description).  
 
-## You Do: Models (10 minutes)
+## You Do: Models (10 minutes / 0:20)
 
-> AM: What knowledge gaps have to be filled here?  
-> AM: -- Which folder to put them in?  
-> AM: -- What a model file looks like?  
-> AM: -- What a file should be named, file + extension?  
+**[5 minutes]** Create Artist and Song models the same way you did in last week's Active Record class. They should...
+* Have the appropriate file name.
+* Have the appropriate model name.
+* Inherit from Active Record.
+* Indicate the appropriate relationships.
+> In this application, a song belongs to an artist.  
 
-Your task is to create models for `Artists` and `Songs`.  
+You will be placing these files into the `app/models` directory of your Rails application.  
 
 How do you know it worked? If we hop into the rails console and type in Artist...  
 
-```text
+```bash
 $ rails c
+```
 
+You should then see something like...  
+
+```text
 Loading development environment (Rails 4.2.4)
 2.2.3 :001> Artist
  => Artist(Table doesn't exist)
 ```
 > If we type in any other capitalized word it will throw an error `uninitialized Constant`  
 
-## We Do: Migrations
+## We Do: Migrations (15 minutes / 0:35)
 
 > AM: Ask Andy how he kicks off this section.  
 
@@ -159,17 +164,21 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 
 > You should NEVER have to update the `schema.rb`. Running `rake db:migrate` will update the schema for you using migration files.  
 
-## You Do: View `db/schema.rb`
+## You Do: View `db/schema.rb` (5 minutes / 0:40)
 
-Take a minute to read through this new file.
+**[1 minute]** Read through this new file.
 
-## You Do: Use Rails Console
+> AM: Add discussion/questions about what people see in there.  
 
-Enter the Rails Console and create two artists.
+## You Do: Use Rails Console (5 minutes / 0:45)
+
+**[2 minutes]** Enter the Rails Console and create two Artists.
 * You can do this using the Active Record methods you learned in earlier classes.
 > Remember, you can enter the Rails Console by typing `rails c` into the Terminal.
 
-## You Do: Create a Migration File for a `songs` Table
+## You Do: Songs Migration (10 minutes / 0:55)
+
+**[5 minutes]** Create a migration file for a new `songs` table.  
 
 To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do pretty much the same thing, with a few differences...
 
@@ -179,7 +188,9 @@ To associate one model with another in a migration file, you can include one of 
 
 > AM: Need to add more info on these three different techniques.  
 
-## I Do: Passing Arguments Into `rails g migration`
+## Break (10 minutes / 1:05)
+
+## I Do: Passing Arguments Into `rails g migration` (10 minutes / 1:15)
 
 We can use the Terminal to create an entire migration file -- column names and data types included -- in one command.
 
@@ -211,15 +222,12 @@ wherever `belongs_to` appears in the model definition.
 * `t.references :artist` is equivalent to `t.integer :artist_id`
 > What is [`index: true`?](http://rny.io/rails/postgresql/2013/08/20/postgresql-indexing-in-rails.html)
 
-## You Do: Use Rails Console to...
+## You Do: Rails Console (5 minutes / 1:20)
 
-* To create at least three songs that are associated with the previous two artists.
-* Save the commands you run in your text editor so you can leverage it later.
-> AM: What does "save the commands" mean?  
+**[2 minutes]** Use Rails Console to create at least three songs that are associated with the previous two artists.  
+> Make a mental note of the commands you use to do this.  
 
-## Break
-
-## We Do: Seeds
+## We Do: Seeds (10 minutes / 1:30)
 
 Seeds allow us to quickly create dummy data. Why would we do that?
 * In order to test out the interfaces and functionalities we build out, we need some content/data to manipulate in order to see how it looks and feels on our application.
@@ -237,7 +245,7 @@ To run `db/seeds.rb` all we need to do is run `$ rake db:seed` in the Terminal.
 
 After running the seeds, go into the `rails console` and play with the objects you created.  
 
-## We Do: Timestamps
+## We Do: Adding Timestamps (10 minutes / 1:40)
 
 Rails can automatically timestamp when objects are created and updated. Let’s create a new migration to add timestamp columns to the artists table.
 
@@ -264,11 +272,15 @@ end
   2. The column you'd like to add to that table.  
   3. The column's data type.  
 
-## You Do: Add Timestamps to the Songs Table
+## You Do: Add Timestamps to the Songs Table (5 minutes / 1:45)
+
+**[3 minutes]** Apply what we just learned to the `songs` table.
+
+## Break (10 minutes / 1:55)
 
 ## I Do: Undoing Things
 
-## The Wrong Way
+### The Wrong Way (10 minutes / 2:05)
 
 Lets assume you have this migration...
 
@@ -311,7 +323,7 @@ It is considered **OK** to rollback migrations, edit them and re-migrate in a de
 A common theme here is that if you're not working alone in development, destroying data is bad.
 * It's sometimes not obvious what actions you take may or may not destroy user data. Know that `rake db:rollback` and `rake db:drop` have the potential of doing it.
 
-## You Do: Create a Migration and Roll It Back
+### You Do: Create a Migration and Roll It Back (5 minutes / 2:10)
 
 * Create a migration that adds a column to artist called `genre` that has a string as the data type
 * Run the migrations by running `$ rake db:migrate`
@@ -321,7 +333,7 @@ A common theme here is that if you're not working alone in development, destroyi
 * Spend two minutes experimenting for yourself how `$ rake db:rollback` works
 
 
-## I Do: The Right Way
+### I Do: The Right Way (10 minutes / 2:20)
 
 Let's assume we did mess up our initial migration like the code above with the misspelled `poto_url`. Instead of the methods listed above, the right way is to create an additional migration that changes the name of the column in our table.  
 
@@ -348,6 +360,8 @@ end
   3. The new name of the column.  
 
 Now if we run our migrations, we can see that the artists table in `db/schema.rb` has the proper `:photo_url` column. Although this process takes a bit more legwork, we don't run the risk of destroying databases or undoing migrations.
+
+## Closing (10 minutes / 2:30)
 
 ## Resources
 
