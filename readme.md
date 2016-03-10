@@ -150,7 +150,7 @@ How are we defining columns in `create_table`?
 * We use `t` to indicate the table we are creating inside of the code block.
 * We then use methods like `.string` or `.integer` to represent the data types of the columns we are creating.
 * These methods take in a symbol argument (e.g., `:photo_url`) that represents the name of the column.  
-  
+
 > For a full list of SQL data types, click [here](http://www.w3schools.com/sql/sql_datatypes_general.asp). For more on using the `change` method, click [here](http://edgeguides.rubyonrails.org/active_record_migrations.html#using-the-change-method)  
 
 You can create the `artists` table and run this migration by entering the following into the terminal...
@@ -313,7 +313,8 @@ If we run these commands, we're dropping our entire database and creating a bran
 
 Another (wrong) way we can do this is by using `rake db:rollback`.
 * To undo a single migration, run `rake db:rollback` in the Terminal.
-* Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.
+* Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.  
+  
 > Running `rake db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
 
 It is considered **OK** to rollback migrations, edit them and re-migrate in a development environment, but **NOT** in a production environment.
