@@ -361,7 +361,7 @@ end
 
 Now if we run our migrations, we can see that the artists table in `db/schema.rb` has the proper `:photo_url` column. Although this process takes a bit more legwork, we don't run the risk of destroying databases or undoing migrations.
 
-## Closing (10 minutes / 2:30)
+## Closing/Questions (10 minutes / 2:30)
 
 ## Resources
 
