@@ -1,17 +1,20 @@
 # Rails Models and Migrations
 
+## To Do
+* Incorporate errors that would've been introduced in the old MVC class.
+
 ## Learning Objectives
 
-- Create a new rails application with postgres as the default
-- Use `rake` to create, edit, and update, and seed the db
-- Use rails generators to create migrations.
-- Use rails console to inspect and manipulate models
-- Use rails migrations to create tables and modify columns
-- Undo a migration with `rake db:rollback`
-- Create migrations that associate one model with another.
-- Identify the impacts of editing existing migrations.
-- Use `timestamps` to timestamp crud actions
-- Use shorthand syntax to create migrations from the command line.
+* Create a new rails application with postgres as the default.
+* Use `rake` to create, edit, and update, and seed the db.
+* Use rails generators to create migrations.
+* Use rails console to inspect and manipulate models.
+* Use rails migrations to create tables and modify columns.
+* Undo a migration with `rake db:rollback`.
+* Create migrations that associate one model with another.
+* Identify the impacts of editing existing migrations.
+* Use `timestamps` to timestamp crud actions.
+* Use shorthand syntax to create migrations from the command line.
 
 ---
 
@@ -19,92 +22,101 @@ The files we’ll be working with in this lesson are highlighted in blue below:
 
 ![](https://dl.dropboxusercontent.com/s/2zho5ekuhxpp5lx/Screenshot%202015-07-26%2010.26.28.png?dl=0)
 
-## We do
+## We Do: Set Up a Rails Application
 
-Create a new rails application, specifying postgres as the database
+Run the below command in Terminal to create a new Rails application...  
 
-    $ rails new tunr -d postgresql
+```bash
+$ rails new tunr -d postgresql
+```
+> `-d postgresql` is important! It tells our application that we will be using postgres as our database. Otherwise, Rails uses SQLite as a database by default.  
 
-This creates 92 new files in a directory called tunr. (I counted w/ `find . -type f | wc -l`)
+This creates 92 new files in a directory called `tunr`. We can easily keep track of what files have changed if we use version control...  
 
-We can easily keep track of what files have changed if we use version control:
+```bash
+$ cd tunr
+$ git init
+$ git add .
+$ git commit -m "initial commit"
+```
+> How can you tell if 92 new files were created? Try running `find . -type f | wc -l` in the Terminal.  
 
-    $ cd tunr
-    $ git init
-    $ git add .
-    $ git commit -m "initial commit"
+Let's explore some of the files that were created...  
 
-The solution for this exercise has already been posted: https://github.com/ga-dc/tunr-rails-models-and-migrations/tree/solution
+## `tunr/config/database.yml`
 
-## tunr/config/database.yml
+Specifies the database connection options. By default, rails uses the development options detailed in this file.  
 
-Specifies the database connection options. By default, rails uses the development options.
+To create the database, run `rake db:create` in the Terminal. How can we tell this actually created the database? Run these three commands separately in the Terminal...
 
-To create the database, run `rake db:create`
+* `$ rails c`
+* `$ psql -d tunr_development`
+* `$ rails dbconsole`
 
-How do you know it worked?
-
-- `rails c`
-- `psql -d tunr_development`
-- `rails dbconsole`
-
-Use `rails c` to view the output of
+Use `rails c` to view the output of...  
 
 ```rb
 ENV["RAILS_ENV"]
 ```
-
-> You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` and `production`
+> You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` and `production`  
 
 ## What is Rake?
 
-Rake is known as "Ruby Make". Make is a popular tool that allows developers to put
-repetitive command line tasks into a single file and run several tasks at the same time
-with a single command.
+**Rake** is a ruby implementation of Make. **Make** is a popular tool that allows developers to put repetitive command line tasks into a single file and run several tasks at the same time
+with a single command.  
 
-Rails uses rake to:
+Rails uses rake to...
+* Create the database (`rake db:create`)
+* Create / Edit database tables (`rake db:migrate`)
+* Drop the database (`rake db:drop`)
+* Seed the database (`rake db:seed`)
 
-- Create the database (`rake db:create`)
-- Create / Edit database tables (`rake db:migrate`)
-- Drop the database (`rake db:drop`)
-- Seed the database (`rake db:seed`)
+[Learn more about Rake here](https://github.com/ruby/rake#description).  
 
-[Learn more about rake here](https://github.com/ruby/rake#description)
+## You Do: Models (10 minutes)
 
-## You do: Models
+> AM: What knowledge gaps have to be filled here?  
+> AM: -- Which folder to put them in?  
+> AM: -- What a model file looks like?  
+> AM: -- What a file should be named, file + extension?  
 
-Create the models for both Artists and Songs
+Your task is to create models for `Artists` and `Songs`.  
 
-If you’re feeling adventurous, consider adding a third model like Favorites, or Genres.
+How do you know it worked? If we hop into the rails console and type in Artist...  
 
-How do you know it worked?
-
-If we hop into the rails console and type in Artist:
-
-```
+```text
 $ rails c
+
 Loading development environment (Rails 4.2.4)
 2.2.3 :001> Artist
  => Artist(Table doesn't exist)
 ```
+> If we type in any other capitalized word it will throw an error `uninitialized Constant`  
 
-> If we type in any other capitalized word it will throw an error `uninitialized Constant`
+## We Do: Migrations
 
-## We do: Migrations
+> AM: Ask Andy how he kicks off this section.  
 
->You can think of each migration as being a new 'version' of the database. A schema starts off with nothing in it, and each migration modifies it to add or remove tables, columns, or entries. Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version. Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.
+A migration as being a new "version" of the database.
+* A schema starts off with nothing in it, and each migration modifies it to add/remove tables, columns or entries.
+* Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
+* Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.
+> An extensive description of Rails migrations can be found [http://edgeguides.rubyonrails.org/active_record_migrations.html](here).
 
-http://edgeguides.rubyonrails.org/active_record_migrations.html
+In the terminal...
 
-In the terminal:
+```bash
+$ rails g migration create_artists
+```
+> `rails g` is short for `rails generate`.  
 
-    $ rails g migration create_artists
+This creates a migration file `db/migrate/20150726145027_create_artists.rb`. Let's see what it looks like...  
 
-`rails g` is short for `rails generate`.
+> AM: Insert screenshot of migration file?  
 
-This creates a migration file `db/migrate/20150726145027_create_artists.rb`
-
->The numbers at the beginning of a migration file are a timestamp. Rails uses this timestamp to determine which migration should be run and in what order, so if you're copying a migration from another application or generate a file yourself, be aware of its position in the order. [source](http://edgeguides.rubyonrails.org/active_record_migrations.html#creating-a-standalone-migration)
+The numbers at the beginning of a migration file are a timestamp.
+* Rails uses this timestamp to determine which migration should be run and in what order, so if you're copying a migration from another application or generate a file yourself, be aware of its position in the order.
+> [Source](http://edgeguides.rubyonrails.org/active_record_migrations.html#creating-a-standalone-migration)  
 
 ```rb
 class CreateArtists < ActiveRecord::Migration
@@ -114,8 +126,8 @@ class CreateArtists < ActiveRecord::Migration
   end
 end
 ```
-
-This file defines the structure of a new table called "artists".
+The above file, as is, defines a new table called `artists`.
+* Now we need to define what columns are going to appear in this table. We'll do this inside of the `create_table` method...
 
 ```rb
 class CreateArtists < ActiveRecord::Migration
@@ -129,48 +141,58 @@ class CreateArtists < ActiveRecord::Migration
 end
 ```
 
-`t` represents the table we're creating, and we can use methods like `string`, `integer`, and other
-data types to create columns of that type, passing in the name of the column as a symbol.
+How are we defining columns in `create_table`?
+* We use `t` to indicate the table we are creating inside of the code block.
+* We then use methods like `.string` or `.integer` to represent the data types of the columns we are creating.
+* These methods take in a symbol argument (e.g., `:photo_url`) that represents the name of the column.
+> For a full list of SQL data types, click [here](http://www.w3schools.com/sql/sql_datatypes_general.asp).  
+>  
+> For more on using the `change` method, click [here](http://edgeguides.rubyonrails.org/active_record_migrations.html#using-the-change-method)  
 
-You can create the artists table and run this migration with `rake db:migrate`
+You can create the `artists` table and run this migration by entering the following into the terminal...
 
-[Using the Change method](http://edgeguides.rubyonrails.org/active_record_migrations.html#using-the-change-method)
-
-When you run `rake db:migrate` I file called `db/schema.rb` gets generated. What are it's contents?
-
-> You should NEVER have to update the `schema.rb`. Running `rake db:migrate` will update the schema for you as per your migrations.
-
-## You do: view db/schema.rb
-
-The above command created this file. Take a minute to read through it.
-
-## You do: Use Rails console
-
-- to create at least two artists.
-- save the commands you run in your text editor so you can leverage it later.
-
-```
-$ rails console
+```bash
+$ rake db:migrate
 ```
 
-`rails c` is short for `rails console`
+After running this, a file called `db/schema.rb` is generated. What are it's contents?
 
-## You do: Create the migration for Songs
+> You should NEVER have to update the `schema.rb`. Running `rake db:migrate` will update the schema for you using migration files.  
 
-To associate one model with another you can use either `t.belongs_to :artist` or `t.references :artist` or `t.integer :artist_id`
+## You Do: View `db/schema.rb`
 
-## I do: passing arguments into `rails g migration`
+Take a minute to read through this new file.
+
+## You Do: Use Rails Console
+
+Enter the Rails Console and create two artists.
+* You can do this using the Active Record methods you learned in earlier classes.
+> Remember, you can enter the Rails Console by typing `rails c` into the Terminal.
+
+## You Do: Create a Migration File for a `songs` Table
+
+To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do pretty much the same thing, with a few differences...
+
+* `t.belongs_to :artist`
+* `t.references :artist`
+* `t.integer :artist_id`
+
+> AM: Need to add more info on these three different techniques.  
+
+## I Do: Passing Arguments Into `rails g migration`
+
+We can use the Terminal to create an entire migration file -- column names and data types included -- in one command.
 
 ```
 $ rails g migration create_songs title:string album:string preview_url:string artist:references
 ```
+> There are lots of little short cuts that `g` or `generate` can give you. [Model Generators](http://edgeguides.rubyonrails.org/active_record_migrations.html#model-generators) are just one example.  
 
-> There are lots of little short cuts that `g` or `generate` can give you. <a href="http://edgeguides.rubyonrails.org/active_record_migrations.html#model-generators">Model Generators</a> is just one example.
-
-The above command creates the following file:
+The above command creates the following file...  
 
 ```rb
 # db/migrate/20150726150324_create_songs.rb
+
 class CreateSongs < ActiveRecord::Migration
   def change
     create_table :songs do |t|
@@ -183,45 +205,45 @@ class CreateSongs < ActiveRecord::Migration
 end
 ```
 
-`references` is used when the column represents a foreign key for another table. It appears
+What do we see?
+* `references` is used when the column represents a foreign key for another table. It appears
 wherever `belongs_to` appears in the model definition.
+* `t.references :artist` is equivalent to `t.integer :artist_id`
+> What is [`index: true`?](http://rny.io/rails/postgresql/2013/08/20/postgresql-indexing-in-rails.html)
 
-`t.references :artist` is equivilant to `t.integer :artist_id`
+## You Do: Use Rails Console to...
 
-[what is `index: true`?](http://rny.io/rails/postgresql/2013/08/20/postgresql-indexing-in-rails.html)
-
-## You do: Use rails console
-
-- to create at least three songs that are associated with the previous two artists.
-- save the commands you run in your text editor so you can leverage it later.
+* To create at least three songs that are associated with the previous two artists.
+* Save the commands you run in your text editor so you can leverage it later.
+> AM: What does "save the commands" mean?  
 
 ## Break
 
-## We do: Seeds
-Seeds? Why do we need to create dummy data for our application. In order to test out the interfaces and functionalities we build out, we need some content/data to manipulate in order to see how it looks and feels on our application.
+## We Do: Seeds
+
+Seeds allow us to quickly create dummy data. Why would we do that?
+* In order to test out the interfaces and functionalities we build out, we need some content/data to manipulate in order to see how it looks and feels on our application.
 
 Let's update our seeds (`db/seeds.rb`) file now.
-
-Remember those commands we had you write down during the rails console exercises?
-
-Instead of the console, leverage the code from those exercises to create 3 artists that have 3 songs each.
-
-Make sure to include the following two lines of code at the top of your `db/seeds.rb`:
+* Write out the same Active Record commands you used in the Rails Console to create three Artists and three Songs.
+* Make sure to include the following two lines of code at the very top of your `db/seeds.rb`...
 
 ```rb
 Artist.destroy_all
 Song.destroy_all
 ```
 
-To run this seeds file all we need to do is run `$ rake db:seed` in the terminal.
+To run `db/seeds.rb` all we need to do is run `$ rake db:seed` in the Terminal.  
 
-After running the seeds, go into the `rails console` and play with the objects you created.
+After running the seeds, go into the `rails console` and play with the objects you created.  
 
-## We do: How to deal with mistakes
+## We Do: Timestamps
 
-I forgot to tell you all about timestamps. Rails can automatically timestamp when objects are created and updated. Let’s create a new migration to add timestamp columns to the artists table.
+Rails can automatically timestamp when objects are created and updated. Let’s create a new migration to add timestamp columns to the artists table.
 
-    $ rails g migration add_timestamps_to_artists
+```bash
+$ rails g migration add_timestamps_to_artists
+```
 
 In that migration place the following content:
 
@@ -235,19 +257,22 @@ class AddTimestampsToArtists < ActiveRecord::Migration
 end
 ```
 
-> add_column is one of many custom methods that can be used in the `change` method in migrations. It takes 3 arguments. The first argument is the table you want to add the column to.  The second argument is what column you'd like to add to that table(1st argument). The third argument is the datatype for the column.
+`add_column`. **What's that?**
+* It's one of many custom methods that can be used in the `change` method in migrations.
+* It takes 3 arguments.
+  1. The table you want to add the column to.  
+  2. The column you'd like to add to that table.  
+  3. The column's data type.  
 
-## You do: add timestamps to Songs table
+## You Do: Add Timestamps to the Songs Table
 
-## I do: Undoing things (possibly dangerous)
+## I Do: Undoing Things
 
-## The Wrong Way(but sometimes the way I do it...)
+## The Wrong Way
 
-> I do it often, but only in development and if I haven't yet shared code with other developers.
+Lets assume you have this migration...
 
-Lets assume you have this migration:
-
-```ruby
+```rb
 class CreateArtists < ActiveRecord::Migration
   def change
     create_table :artists do |t|
@@ -259,9 +284,12 @@ class CreateArtists < ActiveRecord::Migration
 end
 ```
 
-Oh man! I really messed my migration up by misspelling photo but I've already run my migrations. If I fix it directly here in this migration file and run `rake db:migrate`, I can look at my `db/schema.rb` file and see that nothings changed, it still says `poto_url`. It didn't take.
+We really messed this migration up by misspelling `:photo_url`. But oh no, we've already run our migrations! What do we do?  
 
-We can reset the entire database in the terminal:
+We could directly modify this migration file and run `rake db:migrate`.
+* But if we then look at `db/schema.rb`, however, we see that nothing has changed. It still says `poto_url`.
+
+What about resetting the entire database via the Terminal?  
 
 ```bash
 $ rake db:drop
@@ -269,44 +297,43 @@ $ rake db:create
 $ rake db:migrate
 ```
 
-If we run these commands, we're dropping our entire database and creating a brand new one. Why is this potentially super dangerous?
+If we run these commands, we're dropping our entire database and creating a brand new one.
+* Why is this potentially super dangerous?
 
 Another (wrong) way we can do this is by using `rake db:rollback`.
+* To undo a single migration, run `rake db:rollback` in the Terminal.
+* Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.
+> Running `rake db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
 
-To undo a single migration, `rake db:rollback`. This might destroy data - be careful! Whatever columns or tables that were created by that migration will now be gone.
+It is considered **OK** to rollback migrations, edit them and re-migrate in a development environment, but **NOT** in a production environment.
+* If you are working on an application with other developers, avoid using `rake db:rollback` after code has been pushed, and create new migrations that can be migrated forward on other machines.
 
-> Something to note. When we run `rake db:migrate` on a new application it will run every migration. When we run `rake db:rollback` it will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.
+A common theme here is that if you're not working alone in development, destroying data is bad.
+* It's sometimes not obvious what actions you take may or may not destroy user data. Know that `rake db:rollback` and `rake db:drop` have the potential of doing it.
 
-It is considered OK to rollback migrations, edit them, and re-migrate in a development environment, but NOT in a production environment. If you are working on an application with other developers, avoid using `rake db:rollback` after code has been pushed, and create new migrations that can be migrated forward on other machines.
+## You Do: Create a Migration and Roll It Back
 
-
-Important Note if you're a developer - Users will be very upset if you destroy their data.
-
-> It's sometimes not obvious what actions you take may or may not destroy user data. But bother `rake db:rollback` and `rake db:drop` have the potential of doing it.
-
-## You do: Create a migration and roll it back
-
-- Create a migration that adds a column to artist called `genre` that has a string as the data type
-- Run the migrations by running `$ rake db:migrate`
-- Inspect `db/schema.rb`. Look at its contents.
-- Now run rake db:rollback
-- Inspect `db/schema.rb` again and note that `genre` is not longer a column in the table.
-- Spend two minutes experimenting for yourself how `$ rake db:rollback` works
+* Create a migration that adds a column to artist called `genre` that has a string as the data type
+* Run the migrations by running `$ rake db:migrate`
+* Inspect `db/schema.rb`. Look at its contents.
+* Now run rake db:rollback
+* Inspect `db/schema.rb` again and note that `genre` is not longer a column in the table.
+* Spend two minutes experimenting for yourself how `$ rake db:rollback` works
 
 
-## I do: The Right Way
+## I Do: The Right Way
 
-Let's assume we did mess up our initial migration like the code above with the misspelled `poto_url`. Instead of the methods listed above, the right way is to create an additional migration that changes the name of the column in our table.
+Let's assume we did mess up our initial migration like the code above with the misspelled `poto_url`. Instead of the methods listed above, the right way is to create an additional migration that changes the name of the column in our table.  
 
-In the terminal:
+In the terminal...  
 
 ```bash
 $ rails g migration change_column_in_artists
 ```
 
-This will generate a new migration. Lets fill its contents now in `db/migrate/20151105201357_change_column_in_artists.rb`:
+This will generate a new migration. Lets fill its contents now in `db/migrate/20151105201357_change_column_in_artists.rb`...
 
-```ruby
+```rb
 class ChangeColumnInArtists < ActiveRecord::Migration
   def change
     rename_column :artists, :poto_url, :photo_url
@@ -314,15 +341,19 @@ class ChangeColumnInArtists < ActiveRecord::Migration
 end
 ```
 
-> rename_column is another method we can use inside the `change` method of migrations. It takes 3 arguments as well. First argument is the table you'd like to rename a column on. The second argument is which column you'd like to change. The third argument is what you'd like to change the column name to.
+`rename_column` is another method we can use inside `change`.
+* It takes 3 arguments as well...
+  1. The table for which you want to rename a column.  
+  2. The current name of the column you'd like to change.  
+  3. The new name of the column.  
 
-Now if we run our migrations, we can see that the artists table in `db/schema.rb` has the proper `:photo_url` column. Although it's a bit more leg work, we're not having to destroy any databases or undo any migrations which can potentially be really dangerous.
+Now if we run our migrations, we can see that the artists table in `db/schema.rb` has the proper `:photo_url` column. Although this process takes a bit more legwork, we don't run the risk of destroying databases or undoing migrations.
 
 ## Resources
 
-- list of rails commands - https://gist.github.com/jshawl/ce1de309ef993ec808d9
+* [List of Rails Commands](https://gist.github.com/jshawl/ce1de309ef993ec808d9).
 
-## Sample quiz questions
+## Sample Quiz Questions
 
-- Why are migrations timestamped, and how does this affect our development workflow?
-- What is the difference between creating a migration to add a column, vs editing an existing migration and `rake db:migrate:reset`ting?
+* Why are migrations timestamped, and how does this affect our development workflow?
+* What is the difference between creating a migration to add a column, vs editing an existing migration and `rake db:migrate:reset`ting?
