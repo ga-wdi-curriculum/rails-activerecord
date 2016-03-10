@@ -150,10 +150,8 @@ How are we defining columns in `create_table`?
 * We use `t` to indicate the table we are creating inside of the code block.
 * We then use methods like `.string` or `.integer` to represent the data types of the columns we are creating.
 * These methods take in a symbol argument (e.g., `:photo_url`) that represents the name of the column.  
-> For a full list of SQL data types, click [here](http://www.w3schools.com/sql/sql_datatypes_general.asp).  
->   
-> For more on using the `change` method, click [here](http://edgeguides.rubyonrails.org/active_record_migrations.html#using-the-change-method)  
-
+> For a full list of SQL data types, click [here](http://www.w3schools.com/sql/sql_datatypes_general.asp). For more on using the `change` method, click [here](http://edgeguides.rubyonrails.org/active_record_migrations.html#using-the-change-method)  
+  
 You can create the `artists` table and run this migration by entering the following into the terminal...
 
 ```bash
