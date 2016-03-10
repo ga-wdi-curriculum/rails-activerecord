@@ -102,6 +102,14 @@ Loading development environment (Rails 4.2.4)
 
 > AM: Ask Andy how he kicks off this section.  
 
+<!-- ALB: This line doesn't make much sense to me, I feel like
+    the term new version is confusing. I'd favor an anology of a step in a recipe.
+
+    The set of migrations is the recipe, each migration file is a step in that recipe.
+
+    Running the migrations 'follows the steps in the recipe'
+ -->
+
 A migration as being a new "version" of the database.
 * A schema starts off with nothing in it, and each migration modifies it to add/remove tables, columns or entries.
 * Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
@@ -118,10 +126,14 @@ $ rails g migration create_artists
 This creates a migration file `db/migrate/20150726145027_create_artists.rb`. Let's see what it looks like...  
 
 > AM: Insert screenshot of migration file?  
+<!-- ALB: I don't think it's necessary personally -->
+
 
 The numbers at the beginning of a migration file are a timestamp.
 * Rails uses this timestamp to determine which migration should be run and in what order, so if you're copying a migration from another application or generate a file yourself, be aware of its position in the order.
 > [Source](http://edgeguides.rubyonrails.org/active_record_migrations.html#creating-a-standalone-migration)  
+
+<!-- ALB: the above link renders on the same paragraph in HTML, so looks funny. -->
 
 ```rb
 class CreateArtists < ActiveRecord::Migration
@@ -314,7 +326,7 @@ If we run these commands, we're dropping our entire database and creating a bran
 Another (wrong) way we can do this is by using `rake db:rollback`.
 * To undo a single migration, run `rake db:rollback` in the Terminal.
 * Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.  
-  
+
 > Running `rake db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
 
 It is considered **OK** to rollback migrations, edit them and re-migrate in a development environment, but **NOT** in a production environment.
