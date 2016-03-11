@@ -90,7 +90,7 @@ Rails uses rake to...
 * Have the appropriate file name.
 * Have the appropriate model name.
 * Inherit from Active Record.
-* Indicate the appropriate relationships. This app will follow the below ERD..
+* Indicate the appropriate relationships. This app will follow the below ERD...
 
 ![tunr erd](http://i.imgur.com/JzWriwJ.png)
 
