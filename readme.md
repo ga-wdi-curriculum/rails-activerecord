@@ -336,7 +336,7 @@ Another (wrong) way we can do this is by using `rake db:rollback`.
 > Running `rake db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
 
 It is considered **OK** to rollback migrations, edit them and re-migrate in a development environment, but **NOT** in a production environment.
-* If you are working on an application with other developers, avoid using `rake db:rollback` after code has been pushed, and create new migrations that can be migrated forward on other machines.
+* If you are working on an application with other developers, avoid using `rake db:rollback` after code has been pushed.  
 
 A common theme here is that if you're not working alone in development, destroying data is bad.
 * It's sometimes not obvious what actions you take may or may not destroy user data. Know that `rake db:rollback` and `rake db:drop` have the potential of doing it.
