@@ -186,8 +186,6 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 
 **[1 minute]** Read through this new file.
 
-> AM: Add discussion/questions about what people see in there.  
-
 ## You Do: Use Rails Console (5 minutes / 0:45)
 
 **[2 minutes]** Enter the Rails Console and create two Artists.
@@ -203,8 +201,6 @@ To associate one model with another in a migration file, you can include one of 
 * `t.belongs_to :artist`
 * `t.references :artist`
 * `t.integer :artist_id`
-
-> AM: Need to add more info on these three different techniques.  
 
 ## Break (10 minutes / 1:05)
 
