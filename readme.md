@@ -108,7 +108,7 @@ Think of a set of migrations as a recipe for a database schema, with each migrat
 * Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
 * Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.  
 
-> An extensive description of Rails migrations can be found [http://edgeguides.rubyonrails.org/active_record_migrations.html](here).  
+> An extensive description of Rails migrations can be found via the Rails docs [here](http://edgeguides.rubyonrails.org/active_record_migrations.html).  
 
 In the terminal...
 
