@@ -391,5 +391,8 @@ Now if we run our migrations, we can see that the artists table in `db/schema.rb
 
 ## Sample Quiz Questions
 
-* Why are migrations timestamped, and how does this affect our development workflow?
-* What is the difference between creating a migration to add a column, vs editing an existing migration and `rake db:migrate:reset`ting?
+* What are some common `rake` commons you will be using when developing a Rails application?
+* How do we indicate a one-to-many relationship in a migration file?
+* Why would we use a seed file to populate our database?
+* What is the proper way of modifying the effects of an existing migration?
+* What does `rake db:rollback` do?
