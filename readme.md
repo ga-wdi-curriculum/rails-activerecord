@@ -4,9 +4,9 @@
 
 * Create a new rails application with postgres as the default.
 * Use `rake` to create, edit, and update, and seed the db.
-* Use rails generators to create migrations.
-* Use rails console to inspect and manipulate models.
-* Use rails migrations to create tables and modify columns.
+* Use Rails generators to create migrations.
+* Use Rails console to inspect and manipulate models.
+* Use Rails migrations to create tables and modify columns.
 * Undo a migration with `rake db:rollback`.
 * Create migrations that associate one model with another.
 * Identify the impacts of editing existing migrations.
@@ -185,7 +185,7 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 ## You Do: Songs Migration (10 minutes / 0:55)
 
 **[5 minutes]** Create a migration file for a new `songs` table. Songs should have columns for `title` `album` and `preview_url`, all of which are strings.  
-   
+
 To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do pretty much the same thing, with a few differences...
 
 * `t.belongs_to :artist`
