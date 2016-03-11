@@ -118,6 +118,7 @@ Loading development environment (Rails 4.2.4)
 At the end of the last exercise, we got an error in the Rails Console telling us that a table did not yet exist. Let's take care of that with migrations...  
 
 Think of a set of migrations as a recipe for a database schema, with each migration representing a step in that recipe.
+* Our schema file defines the structure of our application's database.
 * A schema starts off with nothing in it, and each migration modifies it to add/remove tables, columns or entries.
 * Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
 * Active Record will also update your `db/schema.rb` file to match the up-to-date structure of your database.  
