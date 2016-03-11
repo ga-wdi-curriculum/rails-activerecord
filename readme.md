@@ -381,6 +381,10 @@ Now if we run our migrations, we can see that the artists table in `db/schema.rb
 
 ## Closing/Questions (10 minutes / 2:30)
 
+## Homework
+
+Complete the Models + Migrations portion of [Scribble](https://github.com/ga-wdi-exercises/scribble).
+
 ## Resources
 
 * [List of Rails Commands](https://gist.github.com/jshawl/ce1de309ef993ec808d9).
