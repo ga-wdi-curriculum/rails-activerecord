@@ -102,24 +102,29 @@ Loading development environment (Rails 4.2.4)
 ## We Do: Migrations (15 minutes / 0:35)
 
 At the end of the last exercise, we got an error in the Rails Console telling us that a table did not yet exist. Let's take care of that with migrations...  
-  
+
 Think of a set of migrations as a recipe for a database schema, with each migration representing a step in that recipe.
 * A schema starts off with nothing in it, and each migration modifies it to add/remove tables, columns or entries.
 * Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
-* Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.
-> An extensive description of Rails migrations can be found [http://edgeguides.rubyonrails.org/active_record_migrations.html](here).
+* Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.  
+
+> An extensive description of Rails migrations can be found [http://edgeguides.rubyonrails.org/active_record_migrations.html](here).  
 
 In the terminal...
 
 ```bash
 $ rails g migration create_artists
 ```
+
 > `rails g` is short for `rails generate`.  
+>
+> Note the title we gave our migration file. Here we've indicated that we're creating a table called `artists`. The two words are separated by an underscore. This is a rails convention.  
 
 This creates a migration file `db/migrate/20150726145027_create_artists.rb`. Let's see what it looks like...  
 
 The numbers at the beginning of a migration file are a timestamp.
-* Rails uses this timestamp to determine which migration should be run and in what order, so if you're copying a migration from another application or generate a file yourself, be aware of its position in the order.
+* Rails uses this timestamp to determine which migration should be run and in what order, so if you're copying a migration from another application or generate a file yourself, be aware of its position in the order.  
+
 > [Source](http://edgeguides.rubyonrails.org/active_record_migrations.html#creating-a-migration)  
 
 ```rb
@@ -217,8 +222,9 @@ end
 What do we see?
 * `references` is used when the column represents a foreign key for another table. It appears
 wherever `belongs_to` appears in the model definition.
-* `t.references :artist` is equivalent to `t.integer :artist_id`
-> What is [`index: true`?](http://rny.io/rails/postgresql/2013/08/20/postgresql-indexing-in-rails.html)
+* `t.references :artist` is equivalent to `t.integer :artist_id`  
+
+> What is [`index: true`?](http://rny.io/rails/postgresql/2013/08/20/postgresql-indexing-in-rails.html)  
 
 ## You Do: Rails Console (5 minutes / 1:20)
 
