@@ -48,14 +48,23 @@ Specifies the database connection options. By default, rails uses the developmen
 
 > `.yml` stands for "YAML Ain't Markup Language". It's often used as a configuration file in Rails (and elsewhere).  
 
-To create the database, run `rake db:create` in the Terminal. How can we tell this actually created the database? Run these three commands separately in the Terminal...
+To create the database, run the following in the Terminal...
 
-* `$ rails c`
-* `$ psql -d tunr_development`
-* `$ rails dbconsole`
+```bash
+$ rake db:create
+```
 
-Use `rails c` to view the output of...  
+How can we tell this actually created the database? Run the following in the terminal. If you see a `psql` prompt then you're good to go...
 
+```bash
+$ rails dbconsole
+```
+
+On top of that, we can see what environment we're currently by entering the Rails Console and viewing the output of `ENV["RAILS_ENV"]`...
+
+```bash
+$ rails c
+```
 ```rb
 ENV["RAILS_ENV"]
 ```
@@ -81,7 +90,9 @@ Rails uses rake to...
 * Have the appropriate file name.
 * Have the appropriate model name.
 * Inherit from Active Record.
-* Indicate the appropriate relationships. In this case, Artists and Songs have a one-to-many relationship.
+* Indicate the appropriate relationships. This app will follow the below ERD..
+
+![tunr erd](http://i.imgur.com/JzWriwJ.png)
 
 You will be placing these files into the `app/models` directory of your Rails application.  
 
