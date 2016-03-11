@@ -46,6 +46,8 @@ Let's explore some of the files that were created...
 
 Specifies the database connection options. By default, rails uses the development options detailed in this file.  
 
+> `.yml` stands for "YAML Ain't Markup Language". It's often used as a configuration file in Rails (and elsewhere).  
+
 To create the database, run `rake db:create` in the Terminal. How can we tell this actually created the database? Run these three commands separately in the Terminal...
 
 * `$ rails c`
@@ -57,7 +59,8 @@ Use `rails c` to view the output of...
 ```rb
 ENV["RAILS_ENV"]
 ```
-> You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` and `production`  
+
+> You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` (a developer-free environment where a QA team can test the application) and `production` (the live application).  
 
 #### What is Rake?
 
@@ -78,9 +81,7 @@ Rails uses rake to...
 * Have the appropriate file name.
 * Have the appropriate model name.
 * Inherit from Active Record.
-* Indicate the appropriate relationships.
-
-> In this application, a song belongs to an artist.  
+* Indicate the appropriate relationships. In this case, Artists and Songs have a one-to-many relationship.
 
 You will be placing these files into the `app/models` directory of your Rails application.  
 
@@ -98,6 +99,8 @@ Loading development environment (Rails 4.2.4)
  => Artist(Table doesn't exist)
 ```
 > If we type in any other capitalized word it will throw an error `uninitialized Constant`  
+>  
+> The console may respond by telling you to enter `Artist.connection` or `Song.connection`. Go ahead and type that in, then continue to test.  
 
 ## We Do: Migrations (15 minutes / 0:35)
 
@@ -106,7 +109,7 @@ At the end of the last exercise, we got an error in the Rails Console telling us
 Think of a set of migrations as a recipe for a database schema, with each migration representing a step in that recipe.
 * A schema starts off with nothing in it, and each migration modifies it to add/remove tables, columns or entries.
 * Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version.
-* Active Record will also update your db/schema.rb file to match the up-to-date structure of your database.  
+* Active Record will also update your `db/schema.rb` file to match the up-to-date structure of your database.  
 
 > An extensive description of Rails migrations can be found via the Rails docs [here](http://edgeguides.rubyonrails.org/active_record_migrations.html).  
 
@@ -181,8 +184,8 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 
 ## You Do: Songs Migration (10 minutes / 0:55)
 
-**[5 minutes]** Create a migration file for a new `songs` table.  
-
+**[5 minutes]** Create a migration file for a new `songs` table. Songs should have columns for `title` `album` and `preview_url`, all of which are strings.  
+   
 To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do pretty much the same thing, with a few differences...
 
 * `t.belongs_to :artist`
@@ -236,7 +239,7 @@ wherever `belongs_to` appears in the model definition.
 Seeds allow us to quickly create dummy data. Why would we do that?
 * In order to test out the interfaces and functionalities we build out, we need some content/data to manipulate in order to see how it looks and feels on our application.
 
-Let's update our seeds (`db/seeds.rb`) file now.
+**[3 minutes]** Let's update our seeds (`db/seeds.rb`) file now.
 * Write out the same Active Record commands you used in the Rails Console to create three Artists and three Songs.
 * Make sure to include the following two lines of code at the very top of your `db/seeds.rb`...
 
@@ -248,6 +251,8 @@ Song.destroy_all
 To run `db/seeds.rb` all we need to do is run `$ rake db:seed` in the Terminal.  
 
 After running the seeds, go into the `rails console` and play with the objects you created.  
+
+> Here's some [sample seed data](https://gist.github.com/amaseda/54223fc96f914500ff15) if you need it.  
 
 ## We Do: Adding Timestamps (10 minutes / 1:40)
 
