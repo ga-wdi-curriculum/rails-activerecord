@@ -197,8 +197,7 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 
 **[5 minutes]** Create a migration file for a new `songs` table. Songs should have columns for `title` `album` and `preview_url`, all of which are strings.  
 
-To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do pretty much the same thing, with a few differences...
-
+To associate one model with another in a migration file, you can include one of the following methods in the `create_table` method. They all do the same thing assuming you have set up your associations properly in your models...  
 * `t.belongs_to :artist`
 * `t.references :artist`
 * `t.integer :artist_id`
