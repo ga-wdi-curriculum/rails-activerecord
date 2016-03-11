@@ -60,7 +60,7 @@ How can we tell this actually created the database? Run the following in the ter
 $ rails dbconsole
 ```
 
-On top of that, we can see what environment we're currently by entering the Rails Console and viewing the output of `ENV["RAILS_ENV"]`...
+On top of that, we can see what environment we're currently in by entering the Rails Console and viewing the output of `ENV["RAILS_ENV"]`...
 
 ```bash
 $ rails c
@@ -189,8 +189,9 @@ After running this, a file called `db/schema.rb` is generated. What are it's con
 ## You Do: Use Rails Console (5 minutes / 0:45)
 
 **[2 minutes]** Enter the Rails Console and create two Artists.
-* You can do this using the Active Record methods you learned in earlier classes.
-> Remember, you can enter the Rails Console by typing `rails c` into the Terminal.
+* You can do this using the Active Record methods you learned in earlier classes.  
+
+> Remember, you can enter the Rails Console by typing `rails c` into the Terminal.  
 
 ## You Do: Songs Migration (10 minutes / 0:55)
 
