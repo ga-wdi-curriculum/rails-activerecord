@@ -30,7 +30,7 @@ $ rails new tunr -d postgresql
 ```
 > `-d postgresql` is important! It tells our application that we will be using postgres as our database. Otherwise, Rails uses SQLite as a database by default.  
 
-This creates 92 new files in a directory called `tunr`. We can easily keep track of what files have changed if we use version control...  
+This creates a lot of new files in a directory called `tunr`. We can easily keep track of what files have changed if we use version control...  
 
 ```bash
 $ cd tunr
@@ -38,7 +38,6 @@ $ git init
 $ git add .
 $ git commit -m "initial commit"
 ```
-> How can you tell if 92 new files were created? Try running `find . -type f | wc -l` in the Terminal.  
 
 Let's explore some of the files that were created...  
 
