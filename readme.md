@@ -2,12 +2,12 @@
 
 ## Learning Objectives
 
-* Create a new rails application with postgres as the default.
-* Use `rake` to create, edit, and update, and seed the db.
+* Create a new rails application with Postgres as the default database.
+* Use `rails` commands to create, edit, and update, and seed the db.
 * Use Rails generators to create migrations.
 * Use Rails console to inspect and manipulate models.
 * Use Rails migrations to create tables and modify columns.
-* Undo a migration with `rake db:rollback`.
+* Undo a migration with `rails db:rollback`.
 * Create migrations that associate one model with another.
 * Identify the impacts of editing existing migrations.
 * Use `timestamps` to timestamp crud actions.
@@ -50,38 +50,32 @@ Specifies the database connection options. By default, rails uses the developmen
 To create the database, run the following in the Terminal...
 
 ```bash
-$ rake db:create
+$ rails db:create
 ```
 
 How can we tell this actually created the database? Run the following in the terminal. If you see a `psql` prompt then you're good to go...
 
 ```bash
-$ rails dbconsole
+$ rails db
 ```
 
-On top of that, we can see what environment we're currently in by entering the Rails Console and viewing the output of `ENV["RAILS_ENV"]`...
+Rails also gives us a very helpful way to load up all the models in our application, and play with them in the console:
 
 ```bash
 $ rails c
 ```
-```rb
-ENV["RAILS_ENV"]
-```
 
-> You can see that the output is `development`. ENV["RAILS_ENV"] is a way we get/set our environment and allows for different types of configurations. The other two types of environment are `test` (a developer-free environment where a QA team can test the application) and `production` (the live application).  
+#### What does the `rails` command do?
 
-#### What is Rake?
+When developing a rails application, developers frequently encounter very similar types of problems, i.e. setting up a database, changing the name of a column, or seeding a database. Luckily, Rails as a framework has several built in commands / helpers that allow us to implement several repetitive command line tasks into a  single command.  
 
-**Rake** is a ruby implementation of Make. **Make** is a popular tool that allows developers to put repetitive command line tasks into a single file and run several tasks at the same time
-with a single command.  
+The `rails` command is frequently used to...
+* Create the database (`rails db:create`)
+* Create / Edit database tables (`rails db:migrate`)
+* Drop the database (`rails db:drop`)
+* Seed the database (`rails db:seed`)
 
-Rails uses rake to...
-* Create the database (`rake db:create`)
-* Create / Edit database tables (`rake db:migrate`)
-* Drop the database (`rake db:drop`)
-* Seed the database (`rake db:seed`)
-
-[Learn more about Rake here](https://github.com/ruby/rake#description).  
+[Learn more about rails command here](https://github.com/ruby/rails#description).  
 
 ## You Do: Models (10 minutes / 0:20)
 
@@ -104,7 +98,7 @@ $ rails c
 You should then see something like...  
 
 ```text
-Loading development environment (Rails 4.2.4)
+Loading development environment (Rails 5.0.1)
 2.2.3 :001> Artist
  => Artist(Table doesn't exist)
 ```
@@ -174,12 +168,12 @@ How are we defining columns in `create_table`?
 You can create the `artists` table and run this migration by entering the following into the terminal...
 
 ```bash
-$ rake db:migrate
+$ rails db:migrate
 ```
 
 After running this, a file called `db/schema.rb` is generated. What are it's contents?
 
-> You should NEVER have to update the `schema.rb`. Running `rake db:migrate` will update the schema for you using migration files.  
+> You should NEVER have to update the `schema.rb`. Running `rails db:migrate` will update the schema for you using migration files.  
 
 ## You Do: View `db/schema.rb` (5 minutes / 0:40)
 
@@ -251,11 +245,11 @@ Seeds allow us to quickly create dummy data. Why would we do that?
 * Make sure to include the following two lines of code at the very top of your `db/seeds.rb`...
 
 ```rb
-Artist.destroy_all
 Song.destroy_all
+Artist.destroy_all
 ```
 
-To run `db/seeds.rb` all we need to do is run `$ rake db:seed` in the Terminal.  
+To run `db/seeds.rb` all we need to do is run `$ rails db:seed` in the Terminal.  
 
 After running the seeds, go into the `rails console` and play with the objects you created.  
 
@@ -314,40 +308,40 @@ end
 
 We really messed this migration up by misspelling `:photo_url`. But oh no, we've already run our migrations! What do we do?  
 
-We could directly modify this migration file and run `rake db:migrate`.
+We could directly modify this migration file and run `rails db:migrate`.
 * But if we then look at `db/schema.rb`, however, we see that nothing has changed. It still says `poto_url`.
 
 What about resetting the entire database via the Terminal?  
 
 ```bash
-$ rake db:drop
-$ rake db:create
-$ rake db:migrate
+$ rails db:drop
+$ rails db:create
+$ rails db:migrate
 ```
 
 If we run these commands, we're dropping our entire database and creating a brand new one.
 * Why is this potentially super dangerous?
 
-Another (wrong) way we can do this is by using `rake db:rollback`.
-* To undo a single migration, run `rake db:rollback` in the Terminal.
+Another (wrong) way we can do this is by using `rails db:rollback`.
+* To undo a single migration, run `rails db:rollback` in the Terminal.
 * Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.  
 
-> Running `rake db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
+> Running `rails db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
 
 It is considered **OK** to rollback migrations, edit them and re-migrate in a development environment, but **NOT** in a production environment.
-* If you are working on an application with other developers, avoid using `rake db:rollback` after code has been pushed.  
+* If you are working on an application with other developers, avoid using `rails db:rollback` after code has been pushed.  
 
 A common theme here is that if you're not working alone in development, destroying data is bad.
-* It's sometimes not obvious what actions you take may or may not destroy user data. Know that `rake db:rollback` and `rake db:drop` have the potential of doing it.
+* It's sometimes not obvious what actions you take may or may not destroy user data. Know that `rails db:rollback` and `rails db:drop` have the potential of doing it.
 
 ### You Do: Create a Migration and Roll It Back (5 minutes / 2:10)
 
 * Create a migration that adds a column to artist called `genre` that has a string as the data type
-* Run the migrations by running `$ rake db:migrate`
+* Run the migrations by running `$ rails db:migrate`
 * Inspect `db/schema.rb`. Look at its contents.
-* Now run rake db:rollback
+* Now run `rails db:rollback`
 * Inspect `db/schema.rb` again and note that `genre` is not longer a column in the table.
-* Spend two minutes experimenting for yourself how `$ rake db:rollback` works
+* Spend two minutes experimenting for yourself how `$ rails db:rollback` works
 
 
 ### I Do: The Right Way (10 minutes / 2:20)
@@ -360,7 +354,7 @@ In the terminal...
 $ rails g migration change_column_in_artists
 ```
 
-This will generate a new migration. Lets fill its contents now in `db/migrate/20151105201357_change_column_in_artists.rb`...
+This will generate a new migration. Lets fill its contents now in `db/migrate/20161105201357_change_column_in_artists.rb`...
 
 ```rb
 class ChangeColumnInArtists < ActiveRecord::Migration
@@ -390,8 +384,8 @@ Complete the Models + Migrations portion of [Scribble](https://github.com/ga-wdi
 
 ## Sample Quiz Questions
 
-* What are some common `rake` commons you will be using when developing a Rails application?
+* What are some common `rails` commons you will be using when developing a Rails application?
 * How do we indicate a one-to-many relationship in a migration file?
 * Why would we use a seed file to populate our database?
 * What is the proper way of modifying the effects of an existing migration?
-* What does `rake db:rollback` do?
+* What does `rails db:rollback` do?
