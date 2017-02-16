@@ -17,9 +17,7 @@
 
 ## Framing
 
-<!-- AM: Could use some more framing... -->
-
-The files we’ll be working with in this lesson are highlighted in blue below:
+The files we’ll be working with in this lesson are highlighted in blue below...
 
 ![](https://dl.dropboxusercontent.com/s/2zho5ekuhxpp5lx/Screenshot%202015-07-26%2010.26.28.png?dl=0)
 
@@ -33,8 +31,6 @@ $ rails new tunr -d postgresql
 > `-d postgresql` is important! It tells our application that we will be using postgres as our database. Otherwise, Rails uses SQLite as a database by default.  
 
 This creates a lot of new files in a directory called `tunr`. We can easily keep track of what files have changed if we use version control...  
-
-<!-- AM: Do we version control throughout the lesson? -->
 
 ```bash
 $ cd tunr
@@ -149,8 +145,8 @@ class CreateArtists < ActiveRecord::Migration
   end
 end
 ```
-The above file, as is, defines a new table called `artists`.
-* Now we need to define what columns are going to appear in this table. We'll do this inside of the `create_table` method...
+
+The above file, as is, defines a new table called `artists`. Now we need to define what columns are going to appear in this table. We'll do this inside of the `create_table` method...
 
 ```rb
 class CreateArtists < ActiveRecord::Migration
@@ -261,7 +257,7 @@ Song.destroy_all
 Artist.destroy_all
 ```
 
-To run `db/seeds.rb` all we need to do is run `$ rails db:seed` in the Terminal.  
+To execute the contents of `db/seeds.rb` all we need to do is run `$ rails db:seed` in the Terminal.  
 
 After running the seeds, go into the `rails console` and play with the objects you created.  
 
@@ -336,8 +332,8 @@ $ rails db:migrate
 If we run these commands, we're dropping our entire database and creating a brand new one.
 * Why is this potentially super dangerous?
 
-Another (wrong) way we can do this is by using `rails db:rollback`.
-* To undo a single migration run `rails db:rollback` in the Terminal
+Another way we can do this is by using `rails db:rollback`.
+* To undo a single migration, run `rails db:rollback` in the Terminal
 * Be careful though -- this might destroy data! Whatever columns or tables that were created by that migration will now be gone.  
 
 > Running `rails db:rollback` will only undo the migration with the most recent timestamp. Every subsequent rollback will undo the most recent timestamped migration that hasn't been undone yet.  
