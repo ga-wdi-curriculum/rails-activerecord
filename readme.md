@@ -332,7 +332,7 @@ end
 ```
 
 * This `validates` keyword tells ActiveRecord we want to enforce a rule on some of this model's properties
-* It takes 2 arguments
+* It takes 2 or more arguments
   1. one or more properties you want to enforce
   2. a hash with:
 
@@ -342,14 +342,14 @@ end
 In this case, we're telling ActiveRecord to validate `name` and `nationality` to always be present (not nil or empty-string)
 
 Plenty of more validation helpers:
-* `length`
+* `length` - enforces rules on the length of a string
 
   ```ruby
   validates :name, length: { minimum: 2 }
 
   validates :password, length: { in: 6..20 }
   ```
-* `numericality`
+* `numericality` - enforces rules on for a numeric value
 
   ```ruby
   validates :height, numericality: true
