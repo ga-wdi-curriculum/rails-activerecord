@@ -296,7 +296,74 @@ end
 
 Apply what we just learned to the `songs` table.
 
-## Break (10 minutes / 1:55)
+## Validations (10 minutes / 1:55)
+
+We're going to take a brief break from migrations to talk about our data. ActiveRecord is pretty great for allowing us to easily read from and write to our database. But sometimes power and simplicity just allows us to more easily shoot ourselves in the foot.
+
+In the rails console (`$ rails c`), lets try some code:
+
+```ruby
+billy = Artist.first
+puts billy.name
+# Billy Joel
+
+billy.name = nil
+billy.save
+
+puts Artist.first.name
+# nil
+```
+
+Every `Artist` *__should__* have a string for their name, but ActiveRecord just let us erase it. If only we could have our model enforce rules on our properties to prevent us from leaving important properties blank.
+
+##### Introducing `validates`.
+
+Much like the relationship keywords `belongs_to` and `has_many`, ActiveRecord provides us with a keyword `validates` to enforce rules on our model's properties.
+
+Lets add this to our `Artist` model:
+
+```ruby
+# tunr/app/models/artist.rb
+
+class Artist < ActiveRecord::Base
+    has_many :songs
+    validates :name, :nationality, {presence: true}
+end
+```
+
+* This `validates` keyword tells ActiveRecord we want to enforce a rule on some of this model's properties
+* It takes 2 arguments
+  1. one or more properties you want to enforce
+  2. a hash with:
+
+     * the validation helper name as a key
+     * it's option(s) as the value
+
+In this case, we're telling ActiveRecord to validate `name` and `nationality` to always be present (not nil or empty-string)
+
+Plenty of more validation helpers:
+* `length`
+
+  ```ruby
+  validates :name, length: { minimum: 2 }
+
+  validates :password, length: { in: 6..20 }
+  ```
+* `numericality`
+
+  ```ruby
+  validates :height, numericality: true
+
+  validates :points, numericality: { only_integer: true }
+
+  validates :age, numericality: { greater_than: 21 }
+  ```
+* [and many more](http://edgeguides.rubyonrails.org/active_record_validations.html#validation-helpers)
+
+ > Remember: `validates` works for **models only**. Don't try to add `validates` to a database migration.
+
+Now back to migrations
+
 
 ## Undoing Things
 
@@ -390,6 +457,7 @@ Complete the Models + Migrations portion of [Scribble](https://github.com/ga-wdi
 ## Resources
 
 * [List of Rails Commands](https://gist.github.com/jshawl/ce1de309ef993ec808d9)
+* [ActiveRecord Validation Helpers](http://edgeguides.rubyonrails.org/active_record_validations.html#validation-helpers)
 
 ## Sample Quiz Questions
 
