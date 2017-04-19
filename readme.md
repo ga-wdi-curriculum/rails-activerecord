@@ -75,7 +75,7 @@ The `rails` command is frequently used to...
 * Drop the database - `rails db:drop`
 * Seed the database - `rails db:seed`
 
-> [Learn more about the `rails` command here.](https://github.com/ruby/rails#description).  
+> [Learn more about the `rails` command here.](http://guides.rubyonrails.org/command_line.html).
 
 ## You Do: Models (10 minutes / 0:20)
 
